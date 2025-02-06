@@ -35,27 +35,16 @@ def fetch_page(url, max_attempts=5):
             main_table = soup.find("table", class_="data-table")  # Store table globally
 
             if main_table:
-                return True  # Successfully found table
+                return True
         except requests.RequestException as e:
             print(f"Attempt {attempt + 1} failed: {e}")
-            time.sleep(5)  # Wait before retrying
-    return False  # Return False if all attempts fail
-
-# Function to scrape table headings
-def scrape_table_headings():
-    """Extracts table headings from the global `main_table`."""
-    global main_table
-    if not main_table:
-        print("No table found.")
-        return None
-
-    headings = [th.text.strip() for th in main_table.select("thead tr th span") if th.text.strip()]
-    return headings
+            time.sleep(5)
+    return False
 
 
 # Main Execution
-if fetch_page(URL):  # Fetch the page and set `main_table`
-    pay_headings = scrape_table_headings()
+if fetch_page(URL):
+    pay_headings = [th.text.strip() for th in main_table.select("thead tr th span") if th.text.strip()]
     if pay_headings:
         # print("Extracted Headings:", pay_headings)
         pay_headings.insert(0, "Major")
@@ -82,11 +71,9 @@ if fetch_page(URL):  # Fetch the page and set `main_table`
             data[pay_headings[1]].append(early_cp[item])
             data[pay_headings[2]].append(mid_cp[item])
         df = pd.DataFrame(data)
-        print(df)
     else:
         print("Failed to extract table headings.")
 else:
     print("Failed to fetch page after multiple attempts.")
 
-
-
+print(df)
