@@ -21,7 +21,6 @@ user_agents = [
 
 main_table = None
 
-
 # Function to fetch the webpage
 def fetch_page(url, max_attempts=5):
     """Fetches the webpage with user-agent rotation and retries."""
@@ -36,6 +35,7 @@ def fetch_page(url, max_attempts=5):
 
             if main_table:
                 return True
+
         except requests.RequestException as e:
             print(f"Attempt {attempt + 1} failed: {e}")
             time.sleep(5)
@@ -54,13 +54,10 @@ if fetch_page(URL):
         row_data = main_table.find_all(name="tr", class_="data-table__row")
         early_cp = []
         mid_cp = []
-        # print(row_data)
         for tr in row_data:
             cp = tr.find_all("td", class_="csr-col--right")
             early_cp.append(cp[0].find("span", class_="data-table__value").text)
             mid_cp.append(cp[1].find("span", class_="data-table__value").text)
-        # for item in range(0, len(majors)):
-        #     pay_headings
         data = {
             pay_headings[0]: [],
             pay_headings[1]: [],
@@ -75,5 +72,6 @@ if fetch_page(URL):
         print("Failed to extract table headings.")
 else:
     print("Failed to fetch page after multiple attempts.")
+
 
 print(df)
