@@ -62,19 +62,18 @@ if fetch_page(URL):
         # for item in range(0, len(majors)):
         #     pay_headings
         data = {
-            "Major": [],
-            "Early": [],
-            "Mid": [],
+            pay_headings[0]: [],
+            pay_headings[1]: [],
+            pay_headings[2]: [],
         }
         for item in range(0, len(majors)):
-            data["Major"].append(majors[item])
-            data["Early"].append(early_cp[item])
-            data["Mid"].append(mid_cp[item])
-        df = pd.DataFrame(data, columns=pay_headings)
+            data[pay_headings[0]].append(majors[item])
+            data[pay_headings[1]].append(early_cp[item])
+            data[pay_headings[2]].append(mid_cp[item])
+        df = pd.DataFrame(data)
     else:
         print("Failed to extract table headings.")
 else:
     print("Failed to fetch page after multiple attempts.")
-
 
 print(df)
